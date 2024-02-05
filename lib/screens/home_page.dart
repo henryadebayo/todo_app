@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/model/taskModel.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
@@ -77,15 +78,82 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Container(
               height: 300,
+              width: double.infinity,
               decoration: BoxDecoration(
-                  color: Colors.grey, borderRadius: BorderRadius.circular(24)),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(0.0, 0.0),
+                      blurRadius: 1.0,
+                    )
+                  ]),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Daily Tasks ",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.add_circle_outline_sharp,
+                            color: Colors.teal,
+                          ),
+                        )
+                      ],
+                    ),
+                    Expanded(
+                        child: ListView.builder(
+                            itemCount: tasksDatabase.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Row(
+                                children: [
+                                  Checkbox(
+                                      value: tasksDatabase[index].done,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          tasksDatabase[index].done = value!;
+                                        });
+                                      }),
+                                  Expanded(
+                                    child: Text(
+                                      tasksDatabase[index].tasks,
+                                      overflow: TextOverflow.visible,
+                                    ),
+                                  )
+                                ],
+                              );
+                            }))
+                  ],
+                ),
+              ),
             ),
           )
         ],
       ),
     );
   }
+
+  List<TasksModel> tasksDatabase = [
+    TasksModel(
+        tasks: "should do all assignments before next class", done: false),
+    TasksModel(
+        tasks: "should "
+            "attend tomorrows class",
+        done: false),
+    TasksModel(tasks: "should practice works from previous class ", done: false)
+  ];
 }
